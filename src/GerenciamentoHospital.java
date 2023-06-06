@@ -59,6 +59,46 @@ class GerenciamentoHospital {
         }
     }
 
+
+    public String[] getNomesPacientes() {
+        String[] nomes = new String[pacientes.size()];
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente paciente = pacientes.get(i);
+            nomes[i] = paciente.getNome();
+        }
+        return nomes;
+    }
+
+    public String[] getNomesMedicos() {
+        String[] nomes = new String[medicos.size()];
+        for (int i = 0; i < medicos.size(); i++) {
+            Medico medico = medicos.get(i);
+            nomes[i] = medico.getNome();
+        }
+        return nomes;
+    }
+
+
+    public Medico getMedicoPorNome(String nomeMedico) {
+        for (Medico medico : medicos) {
+            if (medico.getNome().equals(nomeMedico)) {
+                return medico;
+            }
+        }
+        return null;
+    }
+
+    public Paciente getPacientePorNome(String nomePaciente) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getNome().equals(nomePaciente)) {
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+
+
     public Medico getMedicoPorNumero(int numero) {
         if (numero >= 1 && numero <= medicos.size()) {
             return medicos.get(numero - 1);

@@ -8,6 +8,7 @@ public class Interface extends JFrame {
     private JPanel mainPanel;
     private JTextArea outputTextArea;
 
+
     public Interface() {
         gerenciamento = new GerenciamentoHospital();
         frame = new JFrame("Hospital Management");
@@ -81,34 +82,106 @@ public class Interface extends JFrame {
     }
 
     private void cadastrarMedico() {
-        String nomeMedico = JOptionPane.showInputDialog(frame, "Nome do médico:");
-        String crm = JOptionPane.showInputDialog(frame, "CRM do médico:");
-        String especialidade = JOptionPane.showInputDialog(frame, "Especialidade do médico:");
+        JTextField nomeField = new JTextField();
+        JTextField crmField = new JTextField();
+        JTextField especialidadeField = new JTextField();
 
-        gerenciamento.cadastrarMedico(nomeMedico, crm, especialidade);
-        output("Médico cadastrado com sucesso!\n");
+        JPanel panel = new JPanel(new GridLayout(3, 2));
+        panel.add(new JLabel("Nome do Médico:"));
+        panel.add(nomeField);
+        panel.add(new JLabel("CRM do Médico:"));
+        panel.add(crmField);
+        panel.add(new JLabel("Especialidade:"));
+        panel.add(especialidadeField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Cadastrar Médico",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String nomeMedico = nomeField.getText();
+            String crm = crmField.getText();
+            String especialidade = especialidadeField.getText();
+
+            gerenciamento.cadastrarMedico(nomeMedico, crm, especialidade);
+            output("Médico cadastrado com sucesso!\n");
+        }
     }
 
-    private void cadastrarPaciente() {
-        String nomePaciente = JOptionPane.showInputDialog(frame, "Nome completo do paciente:");
-        String sexo = JOptionPane.showInputDialog(frame, "Sexo do paciente:");
-        int idade = Integer.parseInt(JOptionPane.showInputDialog(frame, "Idade do paciente:"));
-        double altura = Double.parseDouble(JOptionPane.showInputDialog(frame, "Altura do paciente:"));
-        double peso = Double.parseDouble(JOptionPane.showInputDialog(frame, "Peso do paciente:"));
 
-        gerenciamento.cadastrarPaciente(nomePaciente, sexo, idade, altura, peso);
-        output("Paciente cadastrado com sucesso!\n");
+    private void cadastrarPaciente() {
+        JTextField nomeField = new JTextField();
+        JTextField sexoField = new JTextField();
+        JTextField idadeField = new JTextField();
+        JTextField alturaField = new JTextField();
+        JTextField pesoField = new JTextField();
+
+        JPanel panel = new JPanel(new GridLayout(5, 2));
+        panel.add(new JLabel("Nome Completo do Paciente:"));
+        panel.add(nomeField);
+        panel.add(new JLabel("Sexo do Paciente:"));
+        panel.add(sexoField);
+        panel.add(new JLabel("Idade do Paciente:"));
+        panel.add(idadeField);
+        panel.add(new JLabel("Altura do Paciente:"));
+        panel.add(alturaField);
+        panel.add(new JLabel("Peso do Paciente:"));
+        panel.add(pesoField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Cadastrar Paciente",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String nomePaciente = nomeField.getText();
+            String sexo = sexoField.getText();
+            int idade = Integer.parseInt(idadeField.getText());
+            double altura = Double.parseDouble(alturaField.getText());
+            double peso = Double.parseDouble(pesoField.getText());
+
+            gerenciamento.cadastrarPaciente(nomePaciente, sexo, idade, altura, peso);
+            output("Paciente cadastrado com sucesso!\n");
+        }
     }
 
     private void cadastrarFichaConsulta() {
-        String crm = JOptionPane.showInputDialog(frame, "CRM do médico:");
-        String nomePaciente = JOptionPane.showInputDialog(frame, "Nome completo do paciente:");
-        String dataConsulta = JOptionPane.showInputDialog(frame, "Data da consulta:");
-        String descricao = JOptionPane.showInputDialog(frame, "Descrição da consulta:");
+        String[] nomesPacientes = gerenciamento.getNomesPacientes();
+        String[] nomesMedicos = gerenciamento.getNomesMedicos();
 
-        gerenciamento.cadastrarFichaConsulta(dataConsulta, null, null);
+        if (nomesPacientes.length == 0 || nomesMedicos.length == 0) {
+            output("Não há pacientes ou médicos cadastrados. A ficha de consulta não pode ser cadastrada.\n");
+            return;
+        }
+
+        String nomePaciente = (String) JOptionPane.showInputDialog(frame, "Selecione o paciente:", "Cadastro de Ficha de Consulta",
+                JOptionPane.QUESTION_MESSAGE, null, nomesPacientes, nomesPacientes[0]);
+
+        if (nomePaciente == null) {
+            return; // O usuário cancelou a seleção
+        }
+
+        String nomeMedico = (String) JOptionPane.showInputDialog(frame, "Selecione o médico:", "Cadastro de Ficha de Consulta",
+                JOptionPane.QUESTION_MESSAGE, null, nomesMedicos, nomesMedicos[0]);
+
+        if (nomeMedico == null) {
+            return; // O usuário cancelou a seleção
+        }
+
+        Medico medico = gerenciamento.getMedicoPorNome(nomeMedico);
+        Paciente paciente = gerenciamento.getPacientePorNome(nomePaciente);
+
+        if (medico == null) {
+            output("Médico não encontrado. A ficha de consulta não será cadastrada.\n");
+            return;
+        }
+
+        if (paciente == null) {
+            output("Paciente não encontrado. A ficha de consulta não será cadastrada.\n");
+            return;
+        }
+
+        gerenciamento.cadastrarFichaConsulta("", medico, paciente);
         output("Ficha de consulta cadastrada com sucesso!\n");
     }
+
 
     private void exibirFichasConsulta() {
         String crm = JOptionPane.showInputDialog(frame, "CRM do médico:");
