@@ -1,107 +1,151 @@
 import java.util.Scanner;
-import java.util.List;
-
 
 public class Program {
+
     public static void main(String[] args) {
+        GerenciamentoHospital gerenciamento = new GerenciamentoHospital();
         Scanner scanner = new Scanner(System.in);
-        GerenciamentoHospital gerenciamentoHospital = new GerenciamentoHospital();
 
-        // Adicionar os pacientes predefinidos ao GerenciamentoHospital
-        List<Paciente> pacientesIniciais = Paciente.criarPacientesIniciais();
-        gerenciamentoHospital.setPacientes(pacientesIniciais);
 
-        int opcao = 0;
-        while (opcao != 5) {
-            exibirMenu();
-            opcao = scanner.nextInt();
+        Medico medico = new Medico();
+        medico.adicionarMedicosIniciais(gerenciamento);
+        Paciente paciente = new Paciente();
+        paciente.adicionarPacientesIniciais(gerenciamento);
+
+        System.out.println("===== Menu Principal =====");
+        while (true) {
+            System.out.println("Selecione uma opção:");
+            System.out.println("1. Cadastrar Médico");
+            System.out.println("2. Cadastrar Paciente");
+            System.out.println("3. Cadastrar Ficha de Consulta");
+            System.out.println("4. Exibir Fichas de Consulta");
+            System.out.println("5. Exibir Pacientes");
+            System.out.println("6. Exibir Médicos");
+            System.out.println("0. Sair");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar o buffer
 
             switch (opcao) {
                 case 1:
-                    System.out.println("Digite o nome do médico: ");
-                    scanner.nextLine(); // Consumir a nova linha pendente
-                    String nomeMedico = scanner.nextLine();
-                    System.out.println("Digite o CRM do médico: ");
-                    String crmMedico = scanner.nextLine();
-                    System.out.println("Digite a especialidade do médico: ");
-                    String especialidadeMedico = scanner.nextLine();
-
-                    gerenciamentoHospital.cadastrarMedico(nomeMedico, crmMedico, especialidadeMedico);
-                    System.out.println("Médico cadastrado com sucesso!");
+                    cadastrarMedico(gerenciamento, scanner);
                     break;
                 case 2:
-                    System.out.println("Digite o nome do paciente: ");
-                    scanner.nextLine(); // Consumir a nova linha pendente
-                    String nomePaciente = scanner.nextLine();
-                    System.out.println("Digite o sexo do paciente: ");
-                    String sexoPaciente = scanner.nextLine();
-                    System.out.println("Digite a idade do paciente: ");
-                    int idadePaciente = scanner.nextInt();
-
-                    Paciente paciente = new Paciente(nomePaciente, sexoPaciente, idadePaciente);
-                    gerenciamentoHospital.cadastrarPaciente(paciente);
-                    System.out.println("Paciente cadastrado com sucesso!");
+                    cadastrarPaciente(gerenciamento, scanner);
                     break;
                 case 3:
-                    List<Paciente> pacientes = gerenciamentoHospital.getPacientes();
-                    if (pacientes.isEmpty()) {
-                        System.out.println("Não há pacientes cadastrados. Cadastre um paciente primeiro.");
-                    } else {
-                        System.out.println("Selecione o paciente:");
-                        for (int i = 0; i < pacientes.size(); i++) {
-                            Paciente pacienteSelecionado = pacientes.get(opcaoPaciente - 1);
-                            System.out.println(i + 1 + ". " + pacienteSelecionado.getNomeCompleto());
-                        }
-
-                        int opcaoPaciente = scanner.nextInt();
-                        if (opcaoPaciente >= 1 && opcaoPaciente <= pacientes.size()) {
-                            Paciente pacienteSelecionado = pacientes.get(opcaoPaciente - 1);
-
-                            System.out.println("Digite o motivo da consulta: ");
-                            String motivoConsulta = scanner.next();
-
-                            System.out.println("Selecione o médico:");
-                            List<Medico> medicos = gerenciamentoHospital.getMedicos();
-                            for (int i = 0; i < medicos.size(); i++) {
-                                Medico medico = medicos.get(i);
-                                System.out.println(i + 1 + ". " + medico.getNome() + " especialidade: " + medico.getEspecialidade());
-                            }
-
-                            int opcaoMedico = scanner.nextInt();
-                            if (opcaoMedico >= 1 && opcaoMedico <= medicos.size()) {
-                                Medico medicoSelecionado = medicos.get(opcaoMedico - 1);
-
-                                FichaConsulta fichaConsulta = new FichaConsulta(pacienteSelecionado.getNome(), pacienteSelecionado.getSexo(), pacienteSelecionado.getIdade(), motivoConsulta, medicoSelecionado);
-                                gerenciamentoHospital.cadastrarFichaConsulta(fichaConsulta);
-                                System.out.println("Ficha de consulta cadastrada com sucesso!");
-                            } else {
-                                System.out.println("Opção inválida!");
-                            }
-                        } else {
-                            System.out.println("Opção inválida!");
-                        }
-                    }
+                    cadastrarFichaConsulta(gerenciamento, scanner);
                     break;
-
                 case 4:
-                    gerenciamentoHospital.exibirFichasConsulta();
+                    exibirFichasConsulta(gerenciamento);
                     break;
                 case 5:
-                    System.out.println("Encerrando o programa...");
+                    gerenciamento.exibirPacientesOrdenadosPorNome();
                     break;
+                case 6:
+                    gerenciamento.exibirMedicosOrdenadosPorNome();
+                    break;
+
+                case 0:
+                    System.out.println("Encerrando o programa...");
+                    scanner.close();
+                    System.exit(0);
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opção inválida. Digite novamente.");
             }
         }
     }
 
-    public static void exibirMenu() {
-        System.out.println("===== Sistema de Gerenciamento Hospitalar =====");
-        System.out.println("Selecione uma opção:");
-        System.out.println("1. Cadastrar médico");
-        System.out.println("2. Cadastrar paciente");
-        System.out.println("3. Cadastrar ficha de consulta");
-        System.out.println("4. Exibir fichas de consulta");
-        System.out.println("5. Sair");
+    public static void cadastrarMedico(GerenciamentoHospital gerenciamento, Scanner scanner) {
+        System.out.println("===== Cadastro de Médico =====");
+        System.out.print("Nome do médico: ");
+        String nomeMedico = scanner.nextLine();
+
+        System.out.print("CRM do médico: ");
+        String crm = scanner.nextLine();
+
+        System.out.print("Especialidade do médico: ");
+        String especialidade = scanner.nextLine();
+
+        gerenciamento.cadastrarMedico(nomeMedico, crm, especialidade);
+        System.out.println("Médico cadastrado com sucesso!\n");
+    }
+
+    public static void cadastrarPaciente(GerenciamentoHospital gerenciamento, Scanner scanner) {
+        System.out.println("===== Cadastro de Paciente =====");
+        System.out.print("Nome completo do paciente: ");
+        String nomePaciente = scanner.nextLine();
+
+        System.out.print("Sexo do paciente: ");
+        String sexo = scanner.nextLine();
+
+        System.out.print("Idade do paciente: ");
+        int idade = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer
+
+        System.out.print("Altura do paciente: ");
+        double altura = scanner.nextDouble();
+        scanner.nextLine(); // Limpar o buffer
+
+        System.out.print("Peso do paciente: ");
+        double peso = scanner.nextDouble();
+        scanner.nextLine(); // Limpar o buffer
+
+        gerenciamento.cadastrarPaciente(nomePaciente, sexo, idade, altura, peso);
+        System.out.println("Paciente cadastrado com sucesso!\n");
+    }
+
+    public static void cadastrarFichaConsulta(GerenciamentoHospital gerenciamento, Scanner scanner) {
+        System.out.println("===== Cadastro de Ficha de Consulta =====");
+
+        System.out.print("Selecione o paciente:");
+        gerenciamento.exibirPacientesOrdenadosPorNome(); // Mostra os pacientes disponíveis
+
+        int numeroPaciente = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer
+
+        Paciente paciente = gerenciamento.getPacientePorNumero(numeroPaciente);
+        if (paciente == null) {
+            System.out.println("Paciente não encontrado. A ficha de consulta não será cadastrada.");
+            return;
+        }
+
+        System.out.print("Motivo da consulta: ");
+        String motivoConsulta = scanner.nextLine();
+
+        System.out.println("Selecione o médico:");
+        gerenciamento.exibirMedicosOrdenadosPorEspecialidade(); // Mostra os médicos disponíveis ordenados por
+        // especialidade
+
+        int numeroMedico = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer
+
+        Medico medico = gerenciamento.getMedicoPorNumero(numeroMedico);
+        if (medico == null) {
+            System.out.println("Médico não encontrado. A ficha de consulta não será cadastrada.");
+            return;
+        }
+
+
+
+        gerenciamento.cadastrarFichaConsulta(motivoConsulta, medico, paciente);
+
+        System.out.println("Ficha de consulta cadastrada com sucesso!");
+    }
+
+    public static Medico selecionarMedico(GerenciamentoHospital gerenciamento, Scanner scanner) {
+
+        System.out.println("Selecione o médico:");
+        gerenciamento.exibirMedicosOrdenadosPorNome(); // Mostra os médicos disponíveis
+
+        int numeroMedico = scanner.nextInt();
+        scanner.nextLine(); // Limpar o buffer
+
+        return gerenciamento.getMedicoPorNumero(numeroMedico);
+    }
+
+    public static void exibirFichasConsulta(GerenciamentoHospital gerenciamento) {
+        System.out.println("===== Fichas de Consulta =====");
+        gerenciamento.exibirFichasConsulta();
     }
 }

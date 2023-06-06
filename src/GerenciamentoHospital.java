@@ -1,87 +1,95 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-public class GerenciamentoHospital {
-    private List<Paciente> pacientes;
+class GerenciamentoHospital {
+    private SimpleDateFormat dateFormat;
     private List<Medico> medicos;
+    private List<Paciente> pacientes;
     private List<FichaConsulta> fichasConsulta;
 
+
     public GerenciamentoHospital() {
-        this.pacientes = new ArrayList<>();
-        this.medicos = new ArrayList<>();
-        this.fichasConsulta = new ArrayList<>();
-        Medico.adicionarMedicosIniciais(this);
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+        medicos = new ArrayList<>();
+        pacientes = new ArrayList<>();
+        fichasConsulta = new ArrayList<>();
     }
 
-        public void setPacientes(List<Paciente> pacientes) {
-            this.pacientes = pacientes;
-        }
 
-    public void cadastrarPaciente(Paciente paciente) {
-        pacientes.add(paciente);
-        System.out.println(paciente.getNomeCompleto() + " foi cadastrado com sucesso!");
-    }
+
     public void cadastrarMedico(String nome, String crm, String especialidade) {
-        medicos.add(new Medico(nome, crm, especialidade));
+        Medico medico = new Medico(nome, crm, especialidade);
+        medicos.add(medico);
     }
 
-    public void cadastrarFichaConsulta(FichaConsulta fichaConsulta) {
+    public void exibirMedicosOrdenadosPorNome() {
+        Collections.sort(medicos, Comparator.comparing(Medico::getNome));
+
+        for (int i = 0; i < medicos.size(); i++) {
+            Medico medico = medicos.get(i);
+            System.out.println((i + 1) + ". " + medico.getNome() + " - " + medico.getEspecialidade());
+        }
+    }
+
+    public void cadastrarPaciente(String nome, String sexo, int idade, double altura, double peso) {
+        Paciente paciente = new Paciente(nome, sexo, idade, altura, peso);
+        pacientes.add(paciente);
+    }
+
+    public void cadastrarFichaConsulta(String motivoConsulta, Medico medico, Paciente paciente) {
+        FichaConsulta fichaConsulta = new FichaConsulta(motivoConsulta, medico, paciente);
         fichasConsulta.add(fichaConsulta);
     }
 
-    public void exibirMedicos() {
+    public void exibirMedicosOrdenadosPorEspecialidade() {
+        Collections.sort(medicos, Comparator.comparing(Medico::getEspecialidade));
+
         for (int i = 0; i < medicos.size(); i++) {
             Medico medico = medicos.get(i);
-            System.out.println((i + 1) + ". " + medico.getNome() + " especialidade: " + medico.getEspecialidade());
+            System.out.println((i + 1) + ". " + medico.getNome() + " - " + medico.getEspecialidade());
         }
     }
 
-    public List<Paciente> getPacientes() {
-        return pacientes;
+    public void exibirPacientesOrdenadosPorNome() {
+        Collections.sort(pacientes, Comparator.comparing(Paciente::getNome));
+
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente paciente = pacientes.get(i);
+            System.out.println((i + 1) + ". " + paciente.getNome());
+        }
     }
 
-    public Paciente buscarPacientePorNome(String nome) {
-        for (Paciente paciente : pacientes) {
-            if (paciente.getNomeCompleto().equals(nome)) {
-                return paciente;
-            }
+    public Medico getMedicoPorNumero(int numero) {
+        if (numero >= 1 && numero <= medicos.size()) {
+            return medicos.get(numero - 1);
+        } else {
+            return null;
         }
-        return null; // Retorna null se não encontrar o paciente
+    }
+
+    public Paciente getPacientePorNumero(int numero) {
+        if (numero >= 1 && numero <= pacientes.size()) {
+            return pacientes.get(numero - 1);
+        } else {
+            return null;
+        }
     }
 
     public void exibirFichasConsulta() {
-        System.out.println("===== Fichas de Consulta =====");
-        for (FichaConsulta fichaConsulta : fichasConsulta) { // Corrigir aqui
-            System.out.println("Nome do Paciente: " + fichaConsulta.getNomePaciente());
-            System.out.println("Sexo do Paciente: " + fichaConsulta.getSexoPaciente());
-            System.out.println("Idade do Paciente: " + fichaConsulta.getIdadePaciente());
-            System.out.println("Motivo da Consulta: " + fichaConsulta.getMotivoConsulta());
-            System.out.println("Médico: " + fichaConsulta.getMedico().getNome() + " - " + fichaConsulta.getMedico().getEspecialidade());
-            System.out.println("Data e Hora: " + fichaConsulta.getDataHoraFormatada());
-            System.out.println("---------------------");
+        for (FichaConsulta fichaConsulta : fichasConsulta) {
+            String alturaFormatada = String.format("%.2f", fichaConsulta.getPaciente().getAltura());
+            System.out.println("Nome do Paciente: " + fichaConsulta.getPaciente().getNome());
+            System.out.println("Sexo: " + fichaConsulta.getPaciente().getSexo());
+            System.out.println("Idade: " + fichaConsulta.getPaciente().getIdade());
+            System.out.println("Altura: " + alturaFormatada + " - Peso: " + fichaConsulta.getPaciente().getPeso() + " KG");
+            System.out.println("Motivo da consulta: " + fichaConsulta.getMotivoConsulta());
+            System.out.println("Médico: " + fichaConsulta.getMedico().getNome() + " - Especialidade: " + fichaConsulta.getMedico().getEspecialidade());
+            System.out.println("Data da Consulta: " + dateFormat.format(fichaConsulta.getDataConsulta()));
+            System.out.println("----------------------------------------------------");
         }
     }
 
 
-    public void exibirPacientesOrdenadosPorNome() {
-        List<FichaConsulta> fichasOrdenadas = new ArrayList<>(fichasConsulta);
-        Collections.sort(fichasOrdenadas, Comparator.comparing(FichaConsulta::getNomePaciente));
-
-        System.out.println("===== Fichas de Consulta =====");
-        for (FichaConsulta fichaConsulta : fichasOrdenadas) {
-            System.out.println("Nome do Paciente: " + fichaConsulta.getNomePaciente());
-            System.out.println("Sexo do Paciente: " + fichaConsulta.getSexoPaciente());
-            System.out.println("Motivo da Consulta: " + fichaConsulta.getMotivoConsulta());
-            System.out.println("Médico: " + fichaConsulta.getMedico().getEspecialidade() + " - " + fichaConsulta.getMedico().getNome());
-            System.out.println("---------------------");
-        }
-    }
-
-    public List<Medico> getMedicos() {
-        return medicos;
-    }
 
 
 }

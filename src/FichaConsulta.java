@@ -1,43 +1,16 @@
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Date;
 
-public class FichaConsulta {
-    private String nomePaciente;
-    private String sexoPaciente;
-    private int idadePaciente;
+class FichaConsulta {
     private String motivoConsulta;
     private Medico medico;
-    private LocalDateTime dataHora;
+    private Paciente paciente;
+    private Date dataConsulta;
 
-    public FichaConsulta(String nomePaciente, String sexoPaciente, int idadePaciente, String motivoConsulta, Medico medico) {
-        this.nomePaciente = nomePaciente;
-        this.sexoPaciente = sexoPaciente;
-        this.idadePaciente = idadePaciente;
+    public FichaConsulta(String motivoConsulta, Medico medico, Paciente paciente) {
         this.motivoConsulta = motivoConsulta;
         this.medico = medico;
-        this.dataHora = LocalDateTime.now();
-    }
-
-    public String getDataHoraFormatada() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        return dataHora.format(formatter);
-    }
-
-    public String getNomePaciente() {
-        return nomePaciente;
-    }
-
-    public String getSexoPaciente() {
-        return sexoPaciente;
-    }
-
-    public int getIdadePaciente() {
-        return idadePaciente;
+        this.paciente = paciente;
+        this.dataConsulta = new Date();
     }
 
     public String getMotivoConsulta() {
@@ -48,11 +21,11 @@ public class FichaConsulta {
         return medico;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
+    public Paciente getPaciente() {
+        return paciente;
     }
 
-    public String getEspecialidadeMedico() {
-        return medico.getEspecialidade();
+    public Date getDataConsulta() {
+        return dataConsulta;
     }
 }
