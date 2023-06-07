@@ -25,7 +25,7 @@ public class Medico {
         return especialidade;
     }
 
-    public void adicionarMedicosIniciais(GerenciamentoHospital gerenciamentoHospital) {
+    public static void adicionarMedicosIniciais(GerenciamentoHospital gerenciamentoHospital) {
         gerenciamentoHospital.cadastrarMedico("Dr. Lucas Oliveira", "12345", "Clinico Geral");
         gerenciamentoHospital.cadastrarMedico("Dr. Camila Santos", "23456", "Neurologista");
         gerenciamentoHospital.cadastrarMedico("Dr. Pedro Almeida", "34567", "Pediatra");

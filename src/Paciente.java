@@ -37,7 +37,7 @@ class Paciente {
         return peso;
     }
 
-    public void adicionarPacientesIniciais(GerenciamentoHospital gerenciamentoHospital) {
+    public static void adicionarPacientesIniciais(GerenciamentoHospital gerenciamentoHospital) {
         gerenciamentoHospital.cadastrarPaciente("Ana Maria Santos", "Feminino", 42, 1.68, 68.5);
         gerenciamentoHospital.cadastrarPaciente("Juliana Pereira Santos", "Feminino", 28, 1.70, 63.7);
         gerenciamentoHospital.cadastrarPaciente("Felipe Martins Ferreira", "Masculino", 35, 1.78, 76.4);

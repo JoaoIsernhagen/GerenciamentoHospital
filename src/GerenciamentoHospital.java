@@ -12,6 +12,8 @@ class GerenciamentoHospital {
         medicos = new ArrayList<>();
         pacientes = new ArrayList<>();
         fichasConsulta = new ArrayList<>();
+        Medico.adicionarMedicosIniciais(this);
+        Paciente.adicionarPacientesIniciais(this);
     }
 
     public void cadastrarMedico(String nome, String crm, String especialidade) {
