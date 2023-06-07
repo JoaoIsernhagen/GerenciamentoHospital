@@ -6,7 +6,6 @@ public class Program {
         GerenciamentoHospital gerenciamento = new GerenciamentoHospital();
         Scanner scanner = new Scanner(System.in);
 
-
         Medico medico = new Medico();
         medico.adicionarMedicosIniciais(gerenciamento);
         Paciente paciente = new Paciente();
@@ -18,9 +17,9 @@ public class Program {
             System.out.println("1. Cadastrar Médico");
             System.out.println("2. Cadastrar Paciente");
             System.out.println("3. Cadastrar Ficha de Consulta");
-            System.out.println("4. Exibir Fichas de Consulta");
             System.out.println("5. Exibir Pacientes");
             System.out.println("6. Exibir Médicos");
+            System.out.println("4. Exibir Fichas de Consulta");
             System.out.println("0. Sair");
 
             int opcao = scanner.nextInt();

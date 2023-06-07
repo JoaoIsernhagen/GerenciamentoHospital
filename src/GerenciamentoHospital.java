@@ -7,7 +7,6 @@ class GerenciamentoHospital {
     private List<Paciente> pacientes;
     private List<FichaConsulta> fichasConsulta;
 
-
     public GerenciamentoHospital() {
         dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
         medicos = new ArrayList<>();
@@ -15,11 +14,17 @@ class GerenciamentoHospital {
         fichasConsulta = new ArrayList<>();
     }
 
-
-
     public void cadastrarMedico(String nome, String crm, String especialidade) {
         Medico medico = new Medico(nome, crm, especialidade);
         medicos.add(medico);
+    }
+
+    public String[] getNomesMedicos() {
+        String[] nomes = new String[medicos.size()];
+        for (int i = 0; i < medicos.size(); i++) {
+            nomes[i] = medicos.get(i).getNome();
+        }
+        return nomes;
     }
 
     public void exibirMedicosOrdenadosPorNome() {
@@ -34,6 +39,14 @@ class GerenciamentoHospital {
     public void cadastrarPaciente(String nome, String sexo, int idade, double altura, double peso) {
         Paciente paciente = new Paciente(nome, sexo, idade, altura, peso);
         pacientes.add(paciente);
+    }
+
+    public String[] getNomesPacientes() {
+        String[] nomes = new String[pacientes.size()];
+        for (int i = 0; i < pacientes.size(); i++) {
+            nomes[i] = pacientes.get(i).getNome();
+        }
+        return nomes;
     }
 
     public void cadastrarFichaConsulta(String motivoConsulta, Medico medico, Paciente paciente) {
@@ -59,46 +72,6 @@ class GerenciamentoHospital {
         }
     }
 
-
-    public String[] getNomesPacientes() {
-        String[] nomes = new String[pacientes.size()];
-        for (int i = 0; i < pacientes.size(); i++) {
-            Paciente paciente = pacientes.get(i);
-            nomes[i] = paciente.getNome();
-        }
-        return nomes;
-    }
-
-    public String[] getNomesMedicos() {
-        String[] nomes = new String[medicos.size()];
-        for (int i = 0; i < medicos.size(); i++) {
-            Medico medico = medicos.get(i);
-            nomes[i] = medico.getNome();
-        }
-        return nomes;
-    }
-
-
-    public Medico getMedicoPorNome(String nomeMedico) {
-        for (Medico medico : medicos) {
-            if (medico.getNome().equals(nomeMedico)) {
-                return medico;
-            }
-        }
-        return null;
-    }
-
-    public Paciente getPacientePorNome(String nomePaciente) {
-        for (Paciente paciente : pacientes) {
-            if (paciente.getNome().equals(nomePaciente)) {
-                return paciente;
-            }
-        }
-        return null;
-    }
-
-
-
     public Medico getMedicoPorNumero(int numero) {
         if (numero >= 1 && numero <= medicos.size()) {
             return medicos.get(numero - 1);
@@ -107,12 +80,30 @@ class GerenciamentoHospital {
         }
     }
 
+    public Medico getMedicoPorNome(String nome) {
+        for (Medico medico : medicos) {
+            if (medico.getNome().equals(nome)) {
+                return medico;
+            }
+        }
+        return null;
+    }
+
     public Paciente getPacientePorNumero(int numero) {
         if (numero >= 1 && numero <= pacientes.size()) {
             return pacientes.get(numero - 1);
         } else {
             return null;
         }
+    }
+
+    public Paciente getPacientePorNome(String nome) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getNome().equals(nome)) {
+                return paciente;
+            }
+        }
+        return null;
     }
 
     public void exibirFichasConsulta() {
@@ -128,8 +119,4 @@ class GerenciamentoHospital {
             System.out.println("----------------------------------------------------");
         }
     }
-
-
-
-
 }
