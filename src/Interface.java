@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -155,6 +156,9 @@ public class Interface extends JFrame {
             return;
         }
 
+        // Ordenar os nomes dos pacientes em ordem alfabética
+        Arrays.sort(nomesPacientes);
+
         String nomePaciente = (String) JOptionPane.showInputDialog(frame, "Selecione o paciente:", "Cadastro de Ficha de Consulta",
                 JOptionPane.QUESTION_MESSAGE, null, nomesPacientes, nomesPacientes[0]);
 
@@ -162,14 +166,35 @@ public class Interface extends JFrame {
             return; // O usuário cancelou a seleção
         }
 
+        String motivoConsulta = JOptionPane.showInputDialog(frame, "Informe o motivo da consulta:", "Cadastro de Ficha de Consulta",
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (motivoConsulta == null || motivoConsulta.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Motivo da consulta não informado. A ficha de consulta não será cadastrada.");
+            return;
+        }
+
+        // Ordenar as especialidades dos médicos em ordem alfabética
+        Arrays.sort(nomesMedicos, Comparator.comparing(medico -> gerenciamento.getMedicoPorNome(medico).getEspecialidade()));
+
+        // Criar um array de strings formatadas com nome e especialidade dos médicos
+        String[] nomesMedicosFormatados = new String[nomesMedicos.length];
+        for (int i = 0; i < nomesMedicos.length; i++) {
+            Medico medico = gerenciamento.getMedicoPorNome(nomesMedicos[i]);
+            nomesMedicosFormatados[i] = medico.getNome() + " - " + medico.getEspecialidade();
+        }
+
         String nomeMedico = (String) JOptionPane.showInputDialog(frame, "Selecione o médico:", "Cadastro de Ficha de Consulta",
-                JOptionPane.QUESTION_MESSAGE, null, nomesMedicos, nomesMedicos[0]);
+                JOptionPane.QUESTION_MESSAGE, null, nomesMedicosFormatados, nomesMedicosFormatados[0]);
 
         if (nomeMedico == null) {
             return; // O usuário cancelou a seleção
         }
 
-        Medico medico = gerenciamento.getMedicoPorNome(nomeMedico);
+        // Remover a parte da especialidade do nome do médico selecionado
+        String nomeMedicoSelecionado = nomeMedico.split(" - ")[0];
+
+        Medico medico = gerenciamento.getMedicoPorNome(nomeMedicoSelecionado);
         Paciente paciente = gerenciamento.getPacientePorNome(nomePaciente);
 
         if (medico == null) {
@@ -182,9 +207,27 @@ public class Interface extends JFrame {
             return;
         }
 
-        gerenciamento.cadastrarFichaConsulta("", medico, paciente);
+        gerenciamento.cadastrarFichaConsulta(motivoConsulta, medico, paciente);
         JOptionPane.showMessageDialog(frame, "Ficha de consulta cadastrada com sucesso!");
     }
+
+
+    private String[] formatarNomesMedicosComEspecialidade(String[] nomesMedicos) {
+        String[] nomesMedicosFormatados = new String[nomesMedicos.length];
+        for (int i = 0; i < nomesMedicos.length; i++) {
+            String nomeMedico = nomesMedicos[i];
+            Medico medico = gerenciamento.getMedicoPorNome(nomeMedico);
+            String especialidade = medico.getEspecialidade();
+            nomesMedicosFormatados[i] = especialidade + " - " + nomeMedico;
+        }
+
+        // Ordenar os nomes de médicos formatados por especialidades em ordem alfabética
+        Arrays.sort(nomesMedicosFormatados, Comparator.comparing(s -> s.split(" - ")[0]));
+
+        return nomesMedicosFormatados;
+    }
+
+
 
     private void exibirFichasConsulta() {
         String crm = JOptionPane.showInputDialog(frame, "CRM do médico:");

@@ -6,6 +6,7 @@ class FichaConsulta {
     private Paciente paciente;
     private Date dataConsulta;
 
+
     public FichaConsulta(String motivoConsulta, Medico medico, Paciente paciente) {
         this.motivoConsulta = motivoConsulta;
         this.medico = medico;
