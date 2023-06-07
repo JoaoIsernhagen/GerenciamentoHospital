@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 
 class GerenciamentoHospital {
@@ -64,20 +65,43 @@ class GerenciamentoHospital {
     public void exibirMedicosOrdenadosPorEspecialidade() {
         Collections.sort(medicos, Comparator.comparing(Medico::getEspecialidade));
 
+        String[] columnNames = {"#", "Nome", "Especialidade"};
+
+        Object[][] data = new Object[medicos.size()][3];
         for (int i = 0; i < medicos.size(); i++) {
             Medico medico = medicos.get(i);
-            System.out.println((i + 1) + ". " + medico.getNome() + " - " + medico.getEspecialidade());
+            data[i][0] = i + 1;
+            data[i][1] = medico.getNome();
+            data[i][2] = medico.getEspecialidade();
         }
+
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(400, 200));
+
+        JOptionPane.showMessageDialog(null, scrollPane, "Médicos Ordenados por Especialidade", JOptionPane.INFORMATION_MESSAGE);
     }
+
 
     public void exibirPacientesOrdenadosPorNome() {
         Collections.sort(pacientes, Comparator.comparing(Paciente::getNome));
 
+        String[] columnNames = {"#", "Nome"};
+
+        Object[][] data = new Object[pacientes.size()][2];
         for (int i = 0; i < pacientes.size(); i++) {
             Paciente paciente = pacientes.get(i);
-            System.out.println((i + 1) + ". " + paciente.getNome());
+            data[i][0] = i + 1;
+            data[i][1] = paciente.getNome();
         }
+
+        JTable table = new JTable(data, columnNames);
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(300, 200));
+
+        JOptionPane.showMessageDialog(null, scrollPane, "Pacientes Ordenados por Nome", JOptionPane.INFORMATION_MESSAGE);
     }
+
 
     public Medico getMedicoPorNumero(int numero) {
         if (numero >= 1 && numero <= medicos.size()) {
