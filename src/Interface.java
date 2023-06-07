@@ -229,11 +229,10 @@ public class Interface extends JFrame {
 
 
 
-    private void exibirFichasConsulta() {
-        String crm = JOptionPane.showInputDialog(frame, "CRM do médico:");
-
+    public void exibirFichasConsulta() {
         gerenciamento.exibirFichasConsulta();
     }
+
 
     private void exibirPacientesOrdenadosPorNome() {
         gerenciamento.exibirPacientesOrdenadosPorNome();

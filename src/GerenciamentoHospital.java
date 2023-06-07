@@ -1,5 +1,10 @@
+import java.awt.Dimension;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 class GerenciamentoHospital {
     private SimpleDateFormat dateFormat;
@@ -109,16 +114,24 @@ class GerenciamentoHospital {
     }
 
     public void exibirFichasConsulta() {
+        StringBuilder mensagem = new StringBuilder();
         for (FichaConsulta fichaConsulta : fichasConsulta) {
             String alturaFormatada = String.format("%.2f", fichaConsulta.getPaciente().getAltura());
-            System.out.println("Nome do Paciente: " + fichaConsulta.getPaciente().getNome());
-            System.out.println("Sexo: " + fichaConsulta.getPaciente().getSexo());
-            System.out.println("Idade: " + fichaConsulta.getPaciente().getIdade());
-            System.out.println("Altura: " + alturaFormatada + " - Peso: " + fichaConsulta.getPaciente().getPeso() + " KG");
-            System.out.println("Motivo da consulta: " + fichaConsulta.getMotivoConsulta());
-            System.out.println("Médico: " + fichaConsulta.getMedico().getNome() + " - Especialidade: " + fichaConsulta.getMedico().getEspecialidade());
-            System.out.println("Data da Consulta: " + dateFormat.format(fichaConsulta.getDataConsulta()));
-            System.out.println("----------------------------------------------------");
+            mensagem.append("Nome do Paciente: ").append(fichaConsulta.getPaciente().getNome()).append("\n");
+            mensagem.append("Sexo: ").append(fichaConsulta.getPaciente().getSexo()).append("\n");
+            mensagem.append("Idade: ").append(fichaConsulta.getPaciente().getIdade()).append("\n");
+            mensagem.append("Altura: ").append(alturaFormatada).append(" - Peso: ").append(fichaConsulta.getPaciente().getPeso()).append(" KG").append("\n");
+            mensagem.append("Motivo da consulta: ").append(fichaConsulta.getMotivoConsulta()).append("\n");
+            mensagem.append("Médico: ").append(fichaConsulta.getMedico().getNome()).append(" - Especialidade: ").append(fichaConsulta.getMedico().getEspecialidade()).append("\n");
+            mensagem.append("Data da Consulta: ").append(dateFormat.format(fichaConsulta.getDataConsulta())).append("\n");
+            mensagem.append("----------------------------------------------------").append("\n");
         }
+
+        JTextArea textArea = new JTextArea(mensagem.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 300));
+
+        JOptionPane.showMessageDialog(null, scrollPane, "Fichas de Consulta", JOptionPane.INFORMATION_MESSAGE);
     }
 }
