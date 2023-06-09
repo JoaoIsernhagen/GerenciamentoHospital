@@ -61,7 +61,7 @@ public class Interface extends JFrame {
         });
         buttonPanel.add(exibirFichasConsultaButton);
 
-        JButton exibirPacientesOrdenadosButton = new JButton("Exibir Pacientes Ordenados por Nome");
+        JButton exibirPacientesOrdenadosButton = new JButton("Consultar Pacientes");
         exibirPacientesOrdenadosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 exibirPacientesOrdenadosPorNome();
@@ -69,7 +69,7 @@ public class Interface extends JFrame {
         });
         buttonPanel.add(exibirPacientesOrdenadosButton);
 
-        JButton exibirMedicosOrdenadosButton = new JButton("Exibir Médicos Ordenados por Especialidade");
+        JButton exibirMedicosOrdenadosButton = new JButton("Consultar Medicos");
         exibirMedicosOrdenadosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 exibirMedicosOrdenadosPorEspecialidade();
