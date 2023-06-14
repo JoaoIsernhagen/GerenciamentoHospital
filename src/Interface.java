@@ -3,8 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.ArrayList;
+
 
 public class Interface extends JFrame {
     private GerenciamentoHospital gerenciamento;
@@ -61,7 +60,7 @@ public class Interface extends JFrame {
         });
         buttonPanel.add(exibirFichasConsultaButton);
 
-        JButton exibirPacientesOrdenadosButton = new JButton("Consultar Pacientes");
+        JButton exibirPacientesOrdenadosButton = new JButton("Consultar pacientes");
         exibirPacientesOrdenadosButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 exibirPacientesOrdenadosPorNome();
@@ -78,6 +77,16 @@ public class Interface extends JFrame {
         buttonPanel.add(exibirMedicosOrdenadosButton);
 
         mainPanel.add(buttonPanel, BorderLayout.WEST);
+
+        ImageIcon logo = new ImageIcon("C:\\Users\\joaor\\Desktop\\Livro\\GerenciamentoHospital\\Imagens\\hospital.png");
+        JLabel logoLabel = new JLabel(logo);
+        mainPanel.add(logoLabel, BorderLayout.CENTER);
+
+        frame.getContentPane().add(mainPanel);
+        frame.setSize(2000, 1200);
+        frame.setLocationRelativeTo(null); // Centralize a janela na tela
+        frame.setVisible(true);
+
 
         frame.getContentPane().add(mainPanel);
         frame.setSize(800, 400);
@@ -210,23 +219,6 @@ public class Interface extends JFrame {
         gerenciamento.cadastrarFichaConsulta(motivoConsulta, medico, paciente);
         JOptionPane.showMessageDialog(frame, "Ficha de consulta cadastrada com sucesso!");
     }
-
-
-    private String[] formatarNomesMedicosComEspecialidade(String[] nomesMedicos) {
-        String[] nomesMedicosFormatados = new String[nomesMedicos.length];
-        for (int i = 0; i < nomesMedicos.length; i++) {
-            String nomeMedico = nomesMedicos[i];
-            Medico medico = gerenciamento.getMedicoPorNome(nomeMedico);
-            String especialidade = medico.getEspecialidade();
-            nomesMedicosFormatados[i] = especialidade + " - " + nomeMedico;
-        }
-
-        // Ordenar os nomes de médicos formatados por especialidades em ordem alfabética
-        Arrays.sort(nomesMedicosFormatados, Comparator.comparing(s -> s.split(" - ")[0]));
-
-        return nomesMedicosFormatados;
-    }
-
 
 
     public void exibirFichasConsulta() {

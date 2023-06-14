@@ -7,9 +7,7 @@ public class Program {
         Scanner scanner = new Scanner(System.in);
 
         Medico medico = new Medico();
-        medico.adicionarMedicosIniciais(gerenciamento);
         Paciente paciente = new Paciente();
-        paciente.adicionarPacientesIniciais(gerenciamento);
 
         System.out.println("===== Menu Principal =====");
         while (true) {
