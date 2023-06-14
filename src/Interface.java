@@ -221,6 +221,9 @@ public class Interface extends JFrame {
     }
 
 
+
+
+
     public void exibirFichasConsulta() {
         gerenciamento.exibirFichasConsulta();
     }

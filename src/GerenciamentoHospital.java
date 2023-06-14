@@ -35,14 +35,6 @@ class GerenciamentoHospital {
         return nomes;
     }
 
-    public void exibirMedicosOrdenadosPorNome() {
-        Collections.sort(medicos, Comparator.comparing(Medico::getNome));
-
-        for (int i = 0; i < medicos.size(); i++) {
-            Medico medico = medicos.get(i);
-            System.out.println((i + 1) + ". " + medico.getNome() + " - " + medico.getEspecialidade());
-        }
-    }
 
     public void cadastrarPaciente(String nome, String sexo, int idade, double altura, double peso) {
         Paciente paciente = new Paciente(nome, sexo, idade, altura, peso);
@@ -103,14 +95,6 @@ class GerenciamentoHospital {
     }
 
 
-    public Medico getMedicoPorNumero(int numero) {
-        if (numero >= 1 && numero <= medicos.size()) {
-            return medicos.get(numero - 1);
-        } else {
-            return null;
-        }
-    }
-
     public Medico getMedicoPorNome(String nome) {
         for (Medico medico : medicos) {
             if (medico.getNome().equals(nome)) {
@@ -120,13 +104,6 @@ class GerenciamentoHospital {
         return null;
     }
 
-    public Paciente getPacientePorNumero(int numero) {
-        if (numero >= 1 && numero <= pacientes.size()) {
-            return pacientes.get(numero - 1);
-        } else {
-            return null;
-        }
-    }
 
     public Paciente getPacientePorNome(String nome) {
         for (Paciente paciente : pacientes) {
