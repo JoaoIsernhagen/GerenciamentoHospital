@@ -1,3 +1,6 @@
+// Aluno João Ricardo Cruz Isernhage e João Vitor Farias Soares
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -219,10 +222,6 @@ public class Interface extends JFrame {
         gerenciamento.cadastrarFichaConsulta(motivoConsulta, medico, paciente);
         JOptionPane.showMessageDialog(frame, "Ficha de consulta cadastrada com sucesso!");
     }
-
-
-
-
 
     public void exibirFichasConsulta() {
         gerenciamento.exibirFichasConsulta();
